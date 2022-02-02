@@ -110,9 +110,8 @@ def split_cell_values(column):
     of lists, called 'text', and return it.'''
 
     text = []  # each line in the spreadsheet is stored here in separate lists
-    for row in range(1, 20):
-        cell = ws[f'H{row}'].value
-        words = [x.lower() for x in cell.split() if not x.isdigit()]  # Only keep continuous string sequences if
+    for cell in ws['H']:
+        words = [x.lower() for x in cell.value.split() if not x.isdigit()]  # Only keep continuous string sequences if
         text.append(words)  # they are not entirely numbers
     return text
 
@@ -144,10 +143,8 @@ def categorize_description(sorted_dict, text):
     try:
         with open(descriptions_filepath) as f:
             descript_hash = json.load(f)
-            #breakpoint()
             for word in sorted_dict:
                 if word not in descript_hash:
-                    breakpoint()
                     print(f'Here are the lines in which \'{word}\' occurs in the spreadsheet.')
                     for line in text:
                         if word in line:
@@ -173,7 +170,6 @@ def categorize_description(sorted_dict, text):
     with open(descriptions_filepath, 'w') as f:
         json.dump(descript_hash, f)
     return descript_hash
-
 
 
 

@@ -39,3 +39,6 @@ I opted for incorporating some basic NLP techniques to help tease out
 description terms in the spreadsheet that would be more informative if
 kept together. Collocation is the best fit technique and I incorporated 
 the library in a branch called 'NLP'.
+
+What i really like about this project is that the parser is basically a 
+very rudimentary machine learning algorithm. 
