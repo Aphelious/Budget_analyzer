@@ -144,10 +144,10 @@ def categorize_description(sorted_dict, text):
     try:
         with open(descriptions_filepath) as f:
             descript_hash = json.load(f)
-
-            descript_hash = {}  # Store user-defined categories here
+            #breakpoint()
             for word in sorted_dict:
                 if word not in descript_hash:
+                    breakpoint()
                     print(f'Here are the lines in which \'{word}\' occurs in the spreadsheet.')
                     for line in text:
                         if word in line:
@@ -182,9 +182,11 @@ def write_description(descript_hash, text):
     for line in text:
         line_ref += 1
         for word in line:
-            if word in descript_hash:
-                print(f'Description found for word \'{word}\': \'{description}\'. Writing value to spreadsheet.')
+            if word in descript_hash and descript_hash[word] != 'None':
+                print(f'Description found for word \'{word}\': \'{descript_hash[word]}\'. Writing value to spreadsheet.')
                 ws[f'F{line_ref}'].value = descript_hash[word]
+            else:
+                continue
 
 
 
