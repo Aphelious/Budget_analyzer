@@ -110,10 +110,10 @@ def split_cell_values(column):
     of lists, called 'text', and return it.'''
 
     text = []  # each line in the spreadsheet is stored here in separate lists
-    for cell in ws['H']:
-        words = [x.lower() for x in cell.value.split() if not x.isdigit()]  # Only keep continuous string sequences if
-        text.append(words)                                                  # they are not entirely numbers
-
+    for row in range(1, 20):
+        cell = ws[f'H{row}'].value
+        words = [x.lower() for x in cell.split() if not x.isdigit()]  # Only keep continuous string sequences if
+        text.append(words)  # they are not entirely numbers
     return text
 
 
@@ -144,9 +144,21 @@ def categorize_description(sorted_dict, text):
     try:
         with open(descriptions_filepath) as f:
             descript_hash = json.load(f)
-    except:
-        pass
 
+            descript_hash = {}  # Store user-defined categories here
+            for word in sorted_dict:
+                if word not in descript_hash:
+                    print(f'Here are the lines in which \'{word}\' occurs in the spreadsheet.')
+                    for line in text:
+                        if word in line:
+                            print(line)
+                    description = input(f'What description do you want to associate with the term \'{word}\' ?')
+                    descript_hash.update({word: description})
+            with open(descriptions_filepath, 'w') as f:
+                json.dump(descript_hash, f)
+            return descript_hash
+    except:
+        print('No previous description file found. Creating new...')
 
     descript_hash = {}  # Store user-defined categories here
     for word in sorted_dict:
@@ -156,16 +168,14 @@ def categorize_description(sorted_dict, text):
                 if word in line:
                     print(line)
             description = input(f'What description do you want to associate with the term \'{word}\' ?')
-            if description == None:
-                descript_hash.update({word:description})
-                continue
-            else:
-                descript_hash.update({word:description})
-                with open(descriptions_filepath, 'w') as f:
-                    json.dump(descript_hash, descriptions_filepath)
-        else:
-            continue
+            descript_hash.update({word: description})
+    breakpoint()
+    with open(descriptions_filepath, 'w') as f:
+        json.dump(descript_hash, f)
     return descript_hash
+
+
+
 
 def write_description(descript_hash, text):
     line_ref = 0

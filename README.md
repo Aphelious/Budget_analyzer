@@ -17,3 +17,25 @@ the banking transactions. The application then calls on a suite of
 sophisticated visualization tools to produce clear and interesting graphs
 that explain the user's personal financial behavior in ways that empower
 them to make changes if they choose to do so. 
+
+###Implementation:
+
+At first the xlsx parser was pure Python, chaining several function calls 
+together to break down each description line in the spreadsheet into
+individual words or 'word-ish' sequences of letters and numbers. It then 
+removes extraneous data, and combine it all in a list of lists; one list 
+corresponding to one row in the spreadsheet. The script then presents the 
+user with each 'word' and asks how to categorize it. The problem I ran 
+into with this method was that I don't have the expertise to instruct 
+Python to find words that occur together often. Thus, the parser sees 
+the line 'John's Auto Mechanic,' which should be easy to categorize 
+as 'Car repairs,' as separate entries: 'John's,' 'Auto,' and 'Mechanic.' 
+Here the user must settle for throwing away 'John's' and 'Auto' as too 
+general, relying on 'Mechanic' to be the only entry point into the 
+'Car repair' category. This approach bothered me; what's the use of 
+throwing away good data?
+
+I opted for incorporating some basic NLP techniques to help tease out 
+description terms in the spreadsheet that would be more informative if
+kept together. Collocation is the best fit technique and I incorporated 
+the library in a branch called 'NLP'.
