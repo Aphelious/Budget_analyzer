@@ -232,10 +232,6 @@ def parse_description(column):
     categorize_meta_description()
 
 
-
-
-
-
 def format_spreadsheet():
     create_new_cols()
     format_col_widths()
@@ -244,6 +240,11 @@ def format_spreadsheet():
     combine_debits_credits()
     delete_unused_cols()
     parse_description('H')
+
+
+def append_to_master_xlsx():
+    with load_workbook():
+        pass
 
 
 
