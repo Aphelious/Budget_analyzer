@@ -239,7 +239,7 @@ def parse_description(column):
 def format_spreadsheet():
     create_new_cols()
     format_col_widths()
-    set_alignment(('B', 'C', 'D'))
+    set_alignment(('B', 'C', 'D', 'F', 'G'))
     format_dates()
     combine_debits_credits()
     delete_unused_cols()
