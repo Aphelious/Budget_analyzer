@@ -186,26 +186,30 @@ def write_description(descript_hash, text):
 
 
 
+def check_description_edge_cases():
+    line_ref = 0
+    for cell in ws['F']:
+        line_ref += 1
+        column_text = ws[f'H{line_ref}'].value
+        amount = ws[f'I{line_ref}'].value
+        if cell.value == None:
+            description = input(f'What description do you want for this edge case I found: '
+                                f'\n\'{column_text}\' for ${amount}?')
+            print(f'Okay, writing \'{description}\' to file.')
+            ws[f'F{line_ref}'].value = description
+        else:
+            continue
+
+
+
+
 def parse_description(column):
 
     text = split_cell_values(column)
     sorted_dict = words_hash(text)
     descript_hash = categorize_description(sorted_dict, text)
     write_description(descript_hash, text)
-
-
-    # text = ''
-    # for cell in ws['H']:
-    #     words = cell.value.split()
-    #     for word in words:
-    #         if word.isalpha():
-    #             text += (word.lower() + ' ')
-    # tokens = word_tokenize(text)
-    # text_new = nltk.Text(tokens)
-    # print(text_new.concordance('deb'))
-
-
-
+    check_description_edge_cases()
 
 
 
