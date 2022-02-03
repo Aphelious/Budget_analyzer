@@ -201,6 +201,25 @@ def check_description_edge_cases():
             continue
 
 
+def categorize_meta_description():
+
+    '''Group some categories into meta-categories such as 'Food' representing all food-related categories. '''
+
+    line_ref = 0
+    food = ['Groceries', 'Fast food', 'Pizza', 'Deli', 'Seamless', 'Grubhub', 'Chinese food', 'food', 'Food',
+            'Out to eat', 'Breakfast', 'Dessert', 'Diner', 'Factor 75', 'Freshly', 'Lunch', 'Taco Bell',
+            'Vending machine', 'Yes Please']
+
+    car_costs = ['Gas', 'gas', 'Car insurance', 'Car Insurance', 'Car repairs', 'Car Repairs', 'Car parts',
+                 'Car Document Fees', 'Car maintenance']
+    for cell in ws['F']:
+        line_ref += 1
+        if cell.value in food:
+            ws[f'G{line_ref}'].value = 'Food'
+        elif cell.value in car_costs:
+            ws[f'G{line_ref}'].value = 'Car costs'
+        else:
+            ws[f'G{line_ref}'].value = None
 
 
 def parse_description(column):
@@ -210,6 +229,7 @@ def parse_description(column):
     descript_hash = categorize_description(sorted_dict, text)
     write_description(descript_hash, text)
     check_description_edge_cases()
+    categorize_meta_description()
 
 
 
