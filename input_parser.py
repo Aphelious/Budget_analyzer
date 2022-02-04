@@ -1,5 +1,6 @@
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
 from env import *
 import json
 # import nltk
@@ -233,6 +234,28 @@ def parse_description(column):
 
 
 
+def append_to_master_xslx():
+
+    '''Write formatted and categorized lines to master spreadsheet'''
+
+    wb2 = load_workbook(master_file)
+    ws2 = wb2["Raw Data"]
+    dest_max_row = ws2.max_row
+    source_min_column = ws.min_column
+    source_max_column = ws.max_column
+    source_min_row = ws.min_row
+    source_max_row = ws.max_row
+    for row in range(source_min_row, source_max_row + 1):
+        for i in range(source_min_column, source_max_column + 1):
+            col = get_column_letter(i)
+            value = ws[f'{col}{row}'].value
+            ws2[f'{col}{dest_max_row + row}'].value = value
+
+    wb2.save(master_file)
+
+
+
+
 
 
 
@@ -258,10 +281,10 @@ def format_spreadsheet():
 # format_dates()
 # combine_debits_credits()
 # delete_unused_cols()
-parse_description('H')
+# parse_description('H')
 
 # format_spreadsheet()
-
+# append_to_master_xslx()
 
 wb.save(filename=filename)
 wb.close()
