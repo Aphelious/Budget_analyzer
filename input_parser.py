@@ -1,5 +1,5 @@
 from openpyxl import load_workbook
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
 from env import *
 import json
@@ -223,6 +223,25 @@ def categorize_meta_description():
             ws[f'G{line_ref}'].value = None
 
 
+
+def set_sheet_style():
+    '''Set destination spreadsheet font to 'Calibri' and font size 14.'''
+
+    font = Font(name='Calibri',
+                size=14)
+    wb2 = load_workbook(filename=master_file)
+    ws2 = wb2["Raw Data"]
+    dest_max_column = ws2.max_column
+    dest_max_row = ws2.max_row
+    for row in range(1, dest_max_row + 1):
+        for i in range(1, dest_max_column + 1):
+            col = get_column_letter(i)
+            ws2[f'{col}{row}'].font = font
+
+    wb2.save(filename=master_file)
+
+
+
 def parse_description(column):
 
     text = split_cell_values(column)
@@ -267,6 +286,8 @@ def format_spreadsheet():
     combine_debits_credits()
     delete_unused_cols()
     parse_description('H')
+    set_sheet_style()
+
 
 
 
@@ -282,6 +303,7 @@ def format_spreadsheet():
 # combine_debits_credits()
 # delete_unused_cols()
 # parse_description('H')
+set_sheet_style()
 
 # format_spreadsheet()
 # append_to_master_xslx()
