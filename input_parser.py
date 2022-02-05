@@ -257,7 +257,7 @@ def append_to_master_xslx():
 
     '''Write formatted and categorized lines to master spreadsheet'''
 
-    wb2 = load_workbook(master_file)
+    wb2 = load_workbook(filename=master_file)
     ws2 = wb2["Raw Data"]
     dest_max_row = ws2.max_row
     source_min_column = ws.min_column
@@ -270,7 +270,7 @@ def append_to_master_xslx():
             value = ws[f'{col}{row}'].value
             ws2[f'{col}{dest_max_row + row}'].value = value
 
-    wb2.save(master_file)
+    wb2.save(filename=master_file)
 
 
 
