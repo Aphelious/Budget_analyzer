@@ -41,17 +41,21 @@ def set_alignment(cols):
 
     '''Set alignment of columns passed in to 'center'.
 
-    ::param:: cols - tuple of strings representing column names
+    ::param:: cols - tuple of strings representing column names in destination spreadsheet
 
         ex: ('B', 'C', 'D')
-
     '''
 
-    for row in range(1,1000):
-        if ws[f'E{row}'].value == None:
-            break
-        for col in (cols):
-            ws[f'{col}{row}'].alignment = Alignment(horizontal='center')
+    wb2 = load_workbook(filename=master_file)
+    ws2 = wb2["Raw Data"]
+    dest_max_column = ws2.max_column
+    dest_max_row = ws2.max_row
+    for row in range(1, dest_max_row + 1):
+        for i in range(1, dest_max_column + 1):
+            col = get_column_letter(i)
+            ws2[f'{col}{row}'].alignment = Alignment(horizontal='center')
+    wb2.save(filename=master_file)
+
 
 
 
@@ -281,7 +285,6 @@ def append_to_master_xslx():
 def format_spreadsheet():
     create_new_cols()
     format_col_widths()
-    set_alignment(('B', 'C', 'D', 'F', 'G'))
     format_dates()
     combine_debits_credits()
     delete_unused_cols()
@@ -303,7 +306,8 @@ def format_spreadsheet():
 # combine_debits_credits()
 # delete_unused_cols()
 # parse_description('H')
-set_sheet_style()
+# set_sheet_style()
+set_alignment(('B', 'C', 'D', 'F', 'G'))
 
 # format_spreadsheet()
 # append_to_master_xslx()
