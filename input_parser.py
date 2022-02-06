@@ -278,10 +278,6 @@ def append_to_master_xslx():
 
 
 
-
-
-
-
 def format_spreadsheet():
     create_new_cols()
     format_col_widths()
@@ -290,6 +286,13 @@ def format_spreadsheet():
     delete_unused_cols()
     parse_description('H')
     set_sheet_style()
+
+
+
+def format_dest_spreadsheet():
+
+    set_sheet_style()
+    set_alignment(('B', 'C', 'D', 'F', 'G'))
 
 
 
@@ -307,7 +310,7 @@ def format_spreadsheet():
 # delete_unused_cols()
 # parse_description('H')
 # set_sheet_style()
-set_alignment(('B', 'C', 'D', 'F', 'G'))
+# set_alignment(('B', 'C', 'D', 'F', 'G'))
 
 # format_spreadsheet()
 # append_to_master_xslx()
