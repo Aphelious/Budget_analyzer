@@ -38,7 +38,18 @@ throwing away good data?
 I opted for incorporating some basic NLP techniques to help tease out 
 description terms in the spreadsheet that would be more informative if
 kept together. Collocation is the best fit technique and I incorporated 
-the library in a branch called 'NLP'.
+the library in a branch called 'NLP'. What I really like about this project 
+is that the parser is basically a very rudimentary machine learning 
+algorithm. 
 
-What i really like about this project is that the parser is basically a 
-very rudimentary machine learning algorithm. 
+
+####Update:
+So after trying to wrangle Excel into formatting the dates the way I want
+I'm not really satisfied. For one, openpyxl seems to create datetime objects 
+whenever it finds a date, which is good to have that functionality. The
+problem seems to be that when writing that data to the spreadsheet, Excel
+parses the dates and converts them to their own date data type and then 
+formats them differently, making it hard to control the final output of 
+dates. So, yet again, I'm bumping into the need for a database and an
+ORM to manage things. As such, I've decided to switch the implemetation to
+a SQLite database, using SQLachemy's ORM. 
