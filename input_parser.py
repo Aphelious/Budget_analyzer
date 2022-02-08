@@ -1,8 +1,10 @@
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Font
-from openpyxl.utils import get_column_letter
+from openpyxl.utils import get_column_letter, datetime
 from env import *
 import json
+from datetime import date
+import dateparser
 # import nltk
 # from nltk import word_tokenize, sent_tokenize
 # from pprint import pprint
@@ -11,6 +13,7 @@ import json
 
 
 wb = load_workbook(filename= filename)
+wb.iso_dates = True
 ws = wb.active
 
 
@@ -55,7 +58,7 @@ def set_alignment(cols):
             col = get_column_letter(i)
             ws2[f'{col}{row}'].alignment = Alignment(horizontal='center')
     wb2.save(filename=master_file)
-
+    wb2.close()
 
 
 
@@ -84,6 +87,7 @@ def format_dates():
         ws[f'B{row}'].value = date.year
         ws[f'C{row}'].value = f'{date.year} - {month_hash[date.month]}'
         ws[f'D{row}'].value = 'Long Island'
+        ws[f'E{row}'].value = date.date()
 
 
 
@@ -234,6 +238,7 @@ def set_sheet_style():
     font = Font(name='Calibri',
                 size=14)
     wb2 = load_workbook(filename=master_file)
+    wb2.iso_dates = True
     ws2 = wb2["Raw Data"]
     dest_max_column = ws2.max_column
     dest_max_row = ws2.max_row
@@ -243,7 +248,23 @@ def set_sheet_style():
             ws2[f'{col}{row}'].font = font
 
     wb2.save(filename=master_file)
+    wb2.close()
 
+
+def set_iso_dates():
+    '''Set dates in column 'E' to ISO format. Reads values into openpyxl and writes the string outputs of
+    those datetime objects.
+    '''
+
+    wb2 = load_workbook(filename=master_file)
+    wb2.iso_dates = True
+    ws2 = wb2["Raw Data"]
+    for cell in ws2['E'][1:]:
+        cell_date = str(cell.value)
+        cell.value = cell_date
+
+    wb2.save(filename=master_file)
+    wb2.close()
 
 
 def parse_description(column):
@@ -263,6 +284,7 @@ def append_to_master_xslx():
 
     wb2 = load_workbook(filename=master_file)
     ws2 = wb2["Raw Data"]
+    wb2.iso_dates = True
     dest_max_row = ws2.max_row
     source_min_column = ws.min_column
     source_max_column = ws.max_column
@@ -272,9 +294,12 @@ def append_to_master_xslx():
         for i in range(source_min_column, source_max_column + 1):
             col = get_column_letter(i)
             value = ws[f'{col}{row}'].value
+            if type(value) is datetime.datetime:
+                value = value.date()
             ws2[f'{col}{dest_max_row + row}'].value = value
 
     wb2.save(filename=master_file)
+    wb2.close()
 
 
 
@@ -291,9 +316,9 @@ def format_spreadsheet():
 
 def format_dest_spreadsheet():
 
-    set_sheet_style()
     set_alignment(('B', 'C', 'D', 'F', 'G'))
-
+    set_iso_dates()
+    set_sheet_style()
 
 
 
@@ -311,9 +336,13 @@ def format_dest_spreadsheet():
 # parse_description('H')
 # set_sheet_style()
 # set_alignment(('B', 'C', 'D', 'F', 'G'))
+# set_iso_dates()
 
 # format_spreadsheet()
 # append_to_master_xslx()
+# format_dest_spreadsheet()
+
+
 
 wb.save(filename=filename)
 wb.close()
